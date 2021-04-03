@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { Text, View } from 'react-native'
+import { Text, View} from 'react-native'
 import { RectButton, ScrollView } from 'react-native-gesture-handler'
 import { useNavigation, useFocusEffect, useIsFocused, useRoute } from '@react-navigation/native'
 
@@ -10,10 +10,13 @@ import styles from './styles'
 import Tarefas, { Tarefa } from '../../components/Tarefa'
 import api from '../../serviços/api'
 import { Alert } from 'react-native'
+import { ActivityIndicator } from 'react-native'
 
-export default function Listagem() {
-   
-   function verificar() {
+export default function Listagem({ route, navigation }) {
+
+
+  const { titulo } = route.params;;
+  function verificar() {
     // await api.get("/tarefas").then(response => {
     //   setTarefa(response.data);
     //   console.log(response.data)
@@ -21,12 +24,13 @@ export default function Listagem() {
     // })
 
     Alert.alert(data)
-}
-  
-// verificar()
+  }
+
+  // verificar()
   const { navigate } = useNavigation()
   const [tarefas, setTarefa] = useState([]);
-
+  const [tit, setTit] = useState("")
+  const [loading, setLoading] = useState(true)
   async function deletar(id) {
 
     await api.delete(`/deletarTarefa/${id}`);
@@ -40,81 +44,97 @@ export default function Listagem() {
   function renderizarCadastro() {
     navigate('Tarefas')
   }
-  
+
 
   useEffect(() => {
-   api .get("/tarefas").then(response => {
+    api.get("/tarefas").then(response => {
+      setTit(titulo)
       setTarefa(response.data);
+      setLoading(false)
       console.log(response.data)
     })
-  }, []);
+  }, [titulo]);
 
+  if (loading) {
+    return (
+      <View style={styles.carregamento} >
+        <ActivityIndicator   size="large" color="f1c40f" />
 
-  return (
-    <View    style={styles.container}>
-      <PageHeader
-        title="Sua lista de Tarefas"
-        headerRight={(
-          <RectButton
-            onPress={renderizarCadastro}
-            style={styles.botao}
-          >
-            <Text style={styles.text}>
-              add +
-            </Text>
-          </RectButton>
-        )}
-      />
-
-      <ScrollView  
-      
-      onTouchStart={()=>{
         
-        api .get("/tarefas").then(response => {
-      setTarefa(response.data);
-       
-    })}}
-      
-      >  
-        {
+        <Text >Carregando...</Text>
+      </View>)
+  } else {
+    return (
+
+      <View
+
+        style={styles.container}>
+        <PageHeader
+          title="Sua lista de tarefas"
+          headerRight={(
+            <RectButton
+              onPress={renderizarCadastro}
+              style={styles.botao}
+            >
+              <Text style={styles.text}>
+                add +
+              </Text>
+            </RectButton>
+          )}
+        />
+
+        <ScrollView
+
+          onTouchStart={() => {
+
+            api.get("/tarefas").then(response => {
+              setTarefa(response.data);
+
+            })
+          }}
+
+        >
+          {
 
 
 
-          tarefas.map((tarefa) => {
+            tarefas.map((tarefa) => {
 
 
 
 
-            return (<View style={styles.container1}>
+              return (<View style={styles.container1}>
 
 
-              <View style={styles.lista}>
-                <View>
+                <View style={styles.lista}>
+                  <View>
 
-                  <Text style={styles.titulo}>{tarefa.titulo}</Text>
-                  <Text style={styles.descricao}>{tarefa.descricao}</Text>
+                    <Text style={styles.titulo}>{tarefa.titulo}</Text>
+                    <Text style={styles.descricao}>{tarefa.descricao}</Text>
+                  </View>
+
+                  <View style={styles.grupoBotoes}>
+                    <RectButton onPress={() => navigate('Alterar', { "id": tarefa.idTarefa, "desc": tarefa.descricao, "tit": tarefa.titulo })} style={[styles.botoes, styles.colorEditar]}>
+                      <Text>Editar</Text>
+                    </RectButton>
+                    <RectButton onPress={() => deletar(tarefa.idTarefa)} style={styles.botoes}>
+                      <Text>Excluir</Text>
+                    </RectButton>
+                  </View>
+
                 </View>
+                {/* navegar('Detalhes', { itemId:   86, outroParam:   "qualquer coisa que você quiser aqui", }); */}
 
-                <View style={styles.grupoBotoes}>
-                  <RectButton onPress={() => navigate('Alterar', { "id": tarefa.idTarefa, "desc": tarefa.descricao, "tit": tarefa.titulo })} style={[styles.botoes, styles.colorEditar]}>
-                    <Text>Editar</Text>
-                  </RectButton>
-                  <RectButton onPress={() => deletar(tarefa.idTarefa)} style={styles.botoes}>
-                    <Text>Excluir</Text>
-                  </RectButton>
-                </View>
+              </View>)
+            })
 
-              </View>
-              {/* navegar('Detalhes', { itemId:   86, outroParam:   "qualquer coisa que você quiser aqui", }); */}
+          }
 
-            </View>)
-          })
+        </ScrollView>
 
-        }
+      </View>
+    )
+  }
 
-      </ScrollView>
-
-    </View>
-  )
 }
 

@@ -22,17 +22,18 @@ function Cadastro() {
     RenderzarListagem()
   }
   function RenderzarListagem() {
-    navigate('Listagem')
+    navigate('Listagem',{"titulo": "cadastar"})
   }
   const data = { titulo, descricao }
-
+   
+ 
 
   
 
   return (
     <View style={styles.container}>
       <PageHeader
-        title="Cadastre uma nova Tarefa!"
+        title="Cadastre uma nova tarefa!"
         headerRight={(
           <RectButton
             onPress={RenderzarListagem}

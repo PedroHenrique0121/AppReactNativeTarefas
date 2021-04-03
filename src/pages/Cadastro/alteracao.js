@@ -26,18 +26,23 @@ import styles from './styles'
 
 
 export default function Alteracao({ route, navigation }) {
+  const { id,tit,desc } = route.params;
+  const [descricao, setDesc] = useState(desc);
+  const [titulo, setT] = useState(tit);
+  const [idTarefa, setId] = useState(id);
+  
+  const {navigate} = useNavigation();
   async function RenderzarListagem() {
     
       
-    navigation.navigate('Listagem')
+    navigate('Listagem',{"titulo":titulo});
   
 }
 
-  const { id,tit,desc } = route.params;
-    const [descricao, setDesc] = useState(desc);
-    const [titulo, setT] = useState(tit);
-    const [idTarefa, setId] = useState(id);
+ 
   /* 2. Get the param */
+
+
   const data= { idTarefa ,titulo, descricao }
 
   async function alterar(id, body){
