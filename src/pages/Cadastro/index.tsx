@@ -14,12 +14,22 @@ function Cadastro() {
   const { navigate } = useNavigation();
 
   async function cadastrar(data: any) {
-
+    
+     try{
+      await api.post("/cadastrar", data)
+      Alert.alert("Tarefa cadastrada!")
+      RenderzarListagem()
+    
+     }
+     catch(error){
+      Alert.alert("Houve um erro ao tentar o cadastro!")
+     }
       
-    await api.post("/cadastrar", data);
+    
 
-    Alert.alert("Tarefa cadastrada!")
-    RenderzarListagem()
+    
+
+   
   }
   function RenderzarListagem() {
     navigate('Listagem',{"titulo": "cadastar"})

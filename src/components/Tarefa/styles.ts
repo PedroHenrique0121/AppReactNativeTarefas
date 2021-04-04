@@ -45,8 +45,29 @@ const styles = StyleSheet.create({
    colorEditar:{
     backgroundColor:"#ff8c00",
     color:"#3fff"
-  }
-  
+  },
+  carregamento: {
+    
+     flex:1, 
+     justifyContent: "center",
+     alignItems:"center"
+    
+  },
+  textCarregamento:{
+    color: "#ff8c00"
+  },
+
+  vazio:{
+   
+    justifyContent: "center",
+    alignItems:"center"
+   
+  },
+  textVazio:{
+    marginTop:20,
+    color: "#ff8c00"
+  },
+
 
 });
 

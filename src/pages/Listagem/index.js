@@ -11,6 +11,7 @@ import Tarefas, { Tarefa } from '../../components/Tarefa'
 import api from '../../serviços/api'
 import { Alert } from 'react-native'
 import { ActivityIndicator } from 'react-native'
+import Item from '../../components/Tarefa'
 
 export default function Listagem({ route, navigation }) {
 
@@ -55,15 +56,15 @@ export default function Listagem({ route, navigation }) {
     })
   }, [titulo]);
 
-  if (loading) {
-    return (
-      <View style={styles.carregamento} >
-        <ActivityIndicator   size="large" color="f1c40f" />
+  // if (loading) {
+  //   return (
+  //     <View style={styles.carregamento} >
+  //       <ActivityIndicator   size="large" color="f1c40f" />
 
         
-        <Text >Carregando...</Text>
-      </View>)
-  } else {
+  //       <Text >Carregando...</Text>
+  //     </View>)
+  // } else {
     return (
 
       <View
@@ -83,58 +84,9 @@ export default function Listagem({ route, navigation }) {
           )}
         />
 
-        <ScrollView
-
-          onTouchStart={() => {
-
-            api.get("/tarefas").then(response => {
-              setTarefa(response.data);
-
-            })
-          }}
-
-        >
-          {
-
-
-
-            tarefas.map((tarefa) => {
-
-
-
-
-              return (<View style={styles.container1}>
-
-
-                <View style={styles.lista}>
-                  <View>
-
-                    <Text style={styles.titulo}>{tarefa.titulo}</Text>
-                    <Text style={styles.descricao}>{tarefa.descricao}</Text>
-                  </View>
-
-                  <View style={styles.grupoBotoes}>
-                    <RectButton onPress={() => navigate('Alterar', { "id": tarefa.idTarefa, "desc": tarefa.descricao, "tit": tarefa.titulo })} style={[styles.botoes, styles.colorEditar]}>
-                      <Text>Editar</Text>
-                    </RectButton>
-                    <RectButton onPress={() => deletar(tarefa.idTarefa)} style={styles.botoes}>
-                      <Text>Excluir</Text>
-                    </RectButton>
-                  </View>
-
-                </View>
-                {/* navegar('Detalhes', { itemId:   86, outroParam:   "qualquer coisa que você quiser aqui", }); */}
-
-              </View>)
-            })
-
-          }
-
-        </ScrollView>
+        <Item titulo={titulo}></Item>
 
       </View>
     )
   }
-
-}
 

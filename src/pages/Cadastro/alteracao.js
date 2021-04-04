@@ -46,10 +46,18 @@ export default function Alteracao({ route, navigation }) {
   const data= { idTarefa ,titulo, descricao }
 
   async function alterar(id, body){
-         await api.put(`/alterarTarefa/${id}`,body).then(()=>{
-           Alert.alert("Tarefa Alterada com sucesso!");
-           RenderzarListagem()
-         })
+         
+
+         try{
+          await api.put(`/alterarTarefa/${id}`,body).then(()=>{
+            Alert.alert("Tarefa Alterada com sucesso!");
+            RenderzarListagem()
+          })
+        
+         }
+         catch(error){
+          Alert.alert("Houve um erro na tentativa de alteração!")
+         }
   }
   return (
     <View style={styles.container}>
