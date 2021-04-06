@@ -50,11 +50,12 @@ export default function Listagem({ route, navigation }) {
   useEffect(() => {
     api.get("/tarefas").then(response => {
       setTit(titulo)
+      
       setTarefa(response.data);
       setLoading(false)
       console.log(response.data)
     })
-  }, [titulo]);
+  }, [tit]);
 
   // if (loading) {
   //   return (
@@ -71,7 +72,7 @@ export default function Listagem({ route, navigation }) {
 
         style={styles.container}>
         <PageHeader
-          title="Sua lista de tarefas"
+          title="sua lista de tarefas:"
           headerRight={(
             <RectButton
               onPress={renderizarCadastro}
@@ -84,7 +85,7 @@ export default function Listagem({ route, navigation }) {
           )}
         />
 
-        <Item titulo={titulo}></Item>
+        <Item titulo={titulo}/>
 
       </View>
     )

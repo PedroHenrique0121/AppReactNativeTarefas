@@ -1,21 +1,23 @@
+
+
 import React, { useEffect, useState } from 'react'
 import { Text, View} from 'react-native'
 import { RectButton, ScrollView } from 'react-native-gesture-handler'
 import { useNavigation, useFocusEffect, useIsFocused, useRoute } from '@react-navigation/native'
 
-import PageHeader from '../../components/PageHeader'
-import DevItem from '../../components/Tarefa'
+import PageHeader from '../PageHeader'
+import DevItem from '.'
 
 import styles from './styles'
-import Tarefas, { Tarefa } from '../../components/Tarefa'
+import Tarefas, { Tarefa } from '.'
 import api from '../../serviços/api'
 import { Alert } from 'react-native'
 import { ActivityIndicator } from 'react-native'
 
-export default function Item({ti}) {
+export default function Item({titulo}) {
 
+    
 
-const titulo  = ti;
   function verificar() {
     // await api.get("/tarefas").then(response => {
     //   setTarefa(response.data);
@@ -29,10 +31,10 @@ const titulo  = ti;
   // verificar()
   const { navigate } = useNavigation()
   const [tarefas, setTarefa] = useState([]);
-  const [tit, setTit] = useState("")
+  const [tit, setTit] = useState(titulo)
   const [loading, setLoading] = useState(true)
   async function deletar(id) {
-
+   
     await api.delete(`/deletarTarefa/${id}`);
     await api.get("/tarefas").then(response => {
       setTarefa(response.data);
@@ -47,13 +49,14 @@ const titulo  = ti;
 
 
   useEffect(() => {
+   
     api.get("/tarefas").then(response => {
-      setTit(titulo)
+      setTit("")
       setTarefa(response.data);
       setLoading(false)
       
     })
-  }, [tit]);
+  }, [titulo]);
 
   if (loading) {
     return (
@@ -96,13 +99,14 @@ const titulo  = ti;
 
                 <View style={styles.lista}>
                   <View>
-
+                             
                     <Text style={styles.titulo}>{tarefa.titulo}</Text>
                     <Text style={styles.descricao}>{tarefa.descricao}</Text>
                   </View>
 
                   <View style={styles.grupoBotoes}>
-                    <RectButton onPress={() =>{setLoading(false), navigate('Alterar', { "id": tarefa.idTarefa, "desc": tarefa.descricao, "tit": tarefa.titulo }) }} style={[styles.botoes, styles.colorEditar]}>
+                    <RectButton onPress={() =>{
+                    navigate('Alterar', { "id": tarefa.idTarefa, "desc": tarefa.descricao, "tit": tarefa.titulo }) }} style={[styles.botoes, styles.colorEditar]}>
                       <Text>Editar</Text>
                     </RectButton>
                     <RectButton onPress={() => deletar(tarefa.idTarefa)} style={styles.botoes}>
@@ -125,4 +129,3 @@ const titulo  = ti;
   }
 
 }
-

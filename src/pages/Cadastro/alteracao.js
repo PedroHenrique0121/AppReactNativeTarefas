@@ -35,8 +35,8 @@ export default function Alteracao({ route, navigation }) {
   async function RenderzarListagem() {
     
       
-    navigate('Listagem',{"titulo":titulo});
-  
+    navigate('Listagem',{"titulo": Math.random().toString()});
+    console.log( Math.random().toString())
 }
 
  
